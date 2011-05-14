@@ -8,3 +8,10 @@ Python PlayGround.
  http://code.google.com/codejam/contests.html
 
  Starting from Code Jam 2011 and moving backwards.
+
+ Greplin Challenge:
+  greplin.py
+ - challenge.greplin.com
+ 3 problems, sub-string search, prime numbers, subsets
+ used itertools found via StackOverFlow for 3rd problems
+
