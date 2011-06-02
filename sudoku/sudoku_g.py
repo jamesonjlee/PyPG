@@ -25,9 +25,6 @@ COLOR = {
     'LGREY' : (192,192,192)
     }
 
-##utilities
-def num2bit(num):
-  return 1 << num-1
 
 ####################### 'Display' of the Game ###############
 class Board:
@@ -44,12 +41,13 @@ class Board:
     self.stay = []
 
   def setStay(self,x,y,val):
+    """Sets the immutable/stationary values on this board"""
     self.set(x,y,val)
     self.stay.append((x,y,val))
 
   def set(self,x,y,val):
     """set values if valid, return False if failed for some reason"""
-    bit = num2bit(val)
+    bit = self.__num2bit(val)
 
     #check if it was part of static
     for i in self.stay:
@@ -72,9 +70,10 @@ class Board:
     return True
 
   def unset(self,x,y):
+    """Unset the value from the Board, return false for invalid unsets"""
     if self.stat[x][y] is None:
       return False
-    bit = num2bit(self.stat[x][y])
+    bit = self.__num2bit(self.stat[x][y])
 
     #check if it was part of static
     for i in self.stay:
@@ -88,18 +87,43 @@ class Board:
 
     return True
 
+  def Save(self,fname, more=''):
+    """Save the Current state of the game to a file"""
+    f = file(fname,'w')
+    for r in self.stat:
+      for v in r:
+        if v is None:
+          f.write('.')
+        else:
+          f.write(str(v))
+    f.write('\n')
+    f.flush()
+    #if there is additional stuff to write
+    f.write(more)
+    f.flush()
+    f.close()
+
+  def Load(self,line):
+    """Load the current state of the game from file"""
+    line =  line.rstrip() #remove whitespace
+    if len(line) is not 81: 
+      raise Exception("Bad file, not 81")
+    for i in xrange(81):
+      if line[i] in sudoku.digits:
+        self.set(i/9,i%9,int(line[i]))
+
   def solved(self):
-    for r in self.rows:
-      if r is not 0: 
-        return False
-    for c in self.cols:
-      if c is not 0: 
-        return False
-    for a in self.tiles:
-      for t in a:
-        if t is not 0: 
-          return False
+    """Returns true Iff the game is solved"""
+    for r in self.rows: 
+      if r is not 0: return False
+    for c in self.cols: 
+      if c is not 0: return False
+    for a in self.tiles: 
+      for t in a: 
+        if t is not 0: return False
     return True
+  def __num2bit(self,num):
+    return 1 << num-1
 
 ######################## Utiliy ############################
 
@@ -212,18 +236,23 @@ if __name__ == '__main__':
       elif key is K_l:
         fname = inputbox.ask(screen,"Load")
         if len(fname) > 0:
+          f = file(fname,"r")
+          line1 = f.readline()
+          line2 = f.readline()
+          f.close()
           try: 
-            Solver.Load(fname)
             Game = Board()
+            Solver.Load(line2)
             setup(Game, Solver)
+            Game.Load(line1)
             inputbox.display_box(screen,"Loaded %s" % (fname))
           except: 
             inputbox.display_box(screen,"Failed to Load %s" % (fname))
       elif key is K_s:
         fname = inputbox.ask(screen,"Save")
         if len(fname) > 0:
-          try: 
-            Solver.Save(fname)
+          try:
+            Game.Save(fname, Solver.Save(fname))
             inputbox.display_box(screen,"Saved to %s" % (fname))
           except:
             inputbox.display_box(screen,"Failed to Save to %s" %s (fname))

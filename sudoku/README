@@ -1,0 +1,58 @@
+Python Sudoku Game with Separate Solver.
+
+Requires:
+ pygame (python module)
+ inputbox.py (bundled)
+ sudoku.py (bundled)
+ sudoku_g.py (runnable)
+
+Recommended:
+  Python >= 2.6
+  Python <  3.0
+
+To Run:
+  python ./sudoku_g.py 
+
+Play Menu:
+  Select Tiles with the Mouse,
+  Left Click to Select a Tile
+  Input values using 1-9 to fill in the tiles, backspace to clear
+  Note the game prevents you from doing invalid actions
+  Right Click to see Help Menu
+
+Design Issues:
+  There are 3 copies of the game at any one time,
+   - One in the Solver, One in the Game Instance, One as the Buttons
+   - Can be solved by merging the solver and the game
+  Not all generated games are valid sudoku games
+   - Randomly generated board are generally solvable (see [1])
+   - Valid games are suppose to have UNIQUE solution
+     - replicate by repeatedly resetting and auto-solving the same game
+  UI Isn't pretty enough
+   - I learned pygame just to do this.
+
+Comments about Sources:
+ sudoku.py is a highly refactored and fixed version of Norvig[1]'s solver.
+ I chose to leave a solver separate from the UI stuff for easier testing.
+ The solver is rather simple in design, it brute forces using a depth first
+ search algorithm.  It simple recurses into sub-games while randomly selcting
+ values to get the first one to solve for the puzzle.
+ I intentionally added a 'random' into the solver to see the non-uniqueness of
+ the solutions in a randomly generated sudoku game.
+ 
+ inputbox.py was fixed and updated from a source found through pygame so it had
+ numerous bugs and had to add more features to fit the need for this game.
+
+ sudoku_g.py was written completely by me, but it probably could use some more
+ clean up to make it prettier, and possible even split out the Board class.
+ It's possible to just implement the solver here as well, but I chose to keep
+ the solver separate for testing purposes.
+
+ pygame's 2D graphics do seem insufficient, but I am not very good at doing UI
+ designs, especially in the colors department.
+
+Links:
+[1] Norvig's Sudoku Solver:
+http://norvig.com/sudoku.html
+[2] Source for inputbox.py:
+http://www.pygame.org/pcr/inputbox/

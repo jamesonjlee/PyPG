@@ -111,15 +111,9 @@ class Game:
     if not self.Solved():
       raise Exception("Unsolvable")
     return self.values
-  def Load(self,fname,raw=False):
+  def Load(self,grid):
     "load a valid grid from a saved file"
-    if not raw:
-      f = file(fname,'r')
-      grid = f.readline()
-      self.__grid = f.readline()
-    else:
-      grid = fname
-      self.__grid = grid
+    self.__grid = grid
     """Convert grid to a dict of possible values, {square: digits}, or
     return False if a contradiction is detected."""
     ## To start, every square can be any digit; then assign values from the grid.
@@ -136,7 +130,6 @@ class Game:
     return True
   def Save(self,fname):
     "Saves the current state into a file"
-    f = file(fname,'w')
     values = self.values
     s = ''
     for r in rows:
@@ -145,11 +138,8 @@ class Game:
           s += values[r+c]
         else:
           s += '.'
-    f.write(s)
-    f.write('\n')
-    f.write(self.__grid)
-    f.flush()
-    return s
+    #return s
+    return self.__grid
   def Dump(self):
     "Display these values as a 2-D grid."
     values = self.values
@@ -173,19 +163,19 @@ class Game:
             break
         ds = [values[s] for s in squares if len(values[s]) == 1]
         if len(ds) >= N and len(set(ds)) >= 8:
-            self.Load(''.join(values[s] if len(values[s])==1 else '.' for s in squares),True)
+            self.Load(''.join(values[s] if len(values[s])==1 else '.' for s in squares))
             return
     self.New(N) ## Give up and make a new puzzle
   def Reset(self):
-    self.Load(self.__grid,True)
+    self.Load(self.__grid)
 
-#grid1  = '003020600900305001001806400008102900700000008006708200002609500800203009005010300'
-#grid2  = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-#hard1  = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
+grid1  = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
+grid2  = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+hard1  = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
     
 if __name__ == '__main__':
   Sudoku = Game()
-  Sudoku.Load('./test')
+  Sudoku.Load(grid1)
   if Sudoku.Solve() is False:
     #complain
     raise Exception("unsolvable")
