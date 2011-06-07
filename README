@@ -3,15 +3,21 @@ Python PlayGround.
 
  Intended to display programming style in python
 
- First batch of questions will be codes from Google Code Jam (not actually participating)
- Key will be with notes and comments, you can get the original question from google here:
- http://code.google.com/codejam/contests.html
-
- Starting from Code Jam 2011 and moving backwards.
+ Google:
+   First batch of questions will be codes from Google Code Jam (not actually participating)
+   Key will be with notes and comments, you can get the original question from google here:
+   http://code.google.com/codejam/contests.html
+   Starting from Code Jam 2011 and moving backwards (sometime)
 
  Greplin Challenge:
   greplin.py
  - challenge.greplin.com
  3 problems, sub-string search, prime numbers, subsets
  used itertools found via StackOverFlow for 3rd problems
+
+ Sudoku Challenge:
+ Graphic Sudoku Game, (requires pygame)
+ - Base Solver is a refactored Norvig code
+ - Has Inputbox.py (from the internets)
+ - Mouse + Keyboard game
 
