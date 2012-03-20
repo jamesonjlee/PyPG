@@ -10,6 +10,7 @@
 #
 #  Dependency:
 #  python (2.6.6), >2.6, <3.0
+#  python-pip
 #  munkres - (pip install munkres)
 ##########################################
 
@@ -23,7 +24,7 @@ def getBaseFLF(tutor, player):
   vowels = "aeiou"
   flf = 0
   for v in vowels:
-    flf += player.count(v)
+    flf += player.lower().count(v)
   if (len(tutor) % 2):
     return flf*1.5
   else:
@@ -33,11 +34,12 @@ def getBaseFLF(tutor, player):
 # Find the modifier for a tutor-player pair
 #  - since minimum match is 2 chars, do sliding window matching
 #  - non-alphabets count as valid matches
+#  - ignore case
 #
 def getModFLF(tutor, player):
   pos = 2
-  while(len(tutor) < pos):
-    if (tutor[pos-2:pos] in player):
+  while(len(tutor) >= pos):
+    if (tutor[pos-2:pos].lower() in player.lower()):
       return 1.5
     else:
       pos+=1
