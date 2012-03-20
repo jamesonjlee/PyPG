@@ -42,8 +42,14 @@ def getModFLF(tutor, player):
 
 
 ### main body ###
-def main():
+def main(tutors, players):
+  scores = []
+  #create cross-scores
+  for tutor in tutors:
+    # create the score array for each tutor to every player
+    scores.append([ getModFLF(tutor, player)*getBaseFLF(tutor,player) for player in players ])
 
+  print scores
 
 
 ### input handling ###
@@ -71,4 +77,7 @@ if __name__ == "__main__":
   for name in pNames:
     players.append(name.strip())
 
-  #
+  # main loop will actually dump to a file or print
+  main(tutors, players)
+
+# EOF
