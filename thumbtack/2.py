@@ -29,6 +29,7 @@ def flatten():
   dicts = [base]
   curr = base
 
+#one-line _get (see process)
 def _get(key):
   global curr, dicts, base
   for i in xrange(len(dicts),0,-1):
@@ -36,6 +37,7 @@ def _get(key):
       return dicts[i-1][key]
   return "NULL"
 
+# mm switches
 def process(words):
   global curr, dicts, base
   if (words[0] == cmds[0]):
@@ -63,7 +65,8 @@ def process(words):
   else:
     # should not be able to get here
     print "Malformed Input, Try Again"
-    return
+  #end processing this line
+  return 0
 
 
 if __name__ == "__main__":
@@ -72,7 +75,7 @@ if __name__ == "__main__":
     line = raw_input("")
     words = line.split()
     if (len(words) < 1): continue
-    words[0] = words[0].lower()
+    words[0] = words[0].lower() # for all versions of command
     if (words[0] not in cmds):
       print "Unknown Command, Try Again"
     elif (words[0] == "end"):
