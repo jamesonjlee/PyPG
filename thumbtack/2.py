@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 #
 # Thumbtack Challenge #2
 # Simple DB
@@ -10,48 +10,71 @@
 # Initial thoughts:
 # - dict to store
 # - use list to queue current dicts
-# - COMMIT merges into BASE dict
+# - COMMIT merges into base dict
 
-import sys
-
-dicts = []
 cmds = ["end", "get", "set", "unset", "begin", "rollback", "commit"]
+base = {}
+curr = base
+dicts = [base]
 
-BASE = {}
-CURR = BASE
-dicts.append(BASE)
+#
+# flatten everything onto base
+#
+def flatten():
+  global curr, dicts, base
+  for d in dicts:
+    if d is base: continue
+    for key in d.iterkeys():
+      base[key] = d[key]
+  dicts = [base]
+  curr = base
+
+def _get(key):
+  global curr, dicts, base
+  for i in xrange(len(dicts),0,-1):
+    if dicts[i-1].has_key(key):
+      return dicts[i-1][key]
+  return "NULL"
 
 def process(words):
+  global curr, dicts, base
   if (words[0] == cmds[0]):
-    # already handled
+    # this is "end", should have been handled before
     print "I should not be in here"
-    return
-  elif (words[0] == cmds[1]):
-  elif (words[0] == cmds[2]):
-  elif (words[0] == cmds[3]):
-  elif (words[0] == cmds[4]):
-  elif (words[0] == cmds[5]):
-  elif (words[0] == cmds[6]):
+    exit(-1)
+  elif (words[0] == cmds[1] and len(words) is 2):
+    print _get(words[1])
+  elif (words[0] == cmds[2] and len(words) is 3):
+    curr[words[1]] = words[2]
+  elif (words[0] == cmds[3] and len(words) is 2):
+    curr[words[1]] = "NULL"
+  elif (words[0] == cmds[4] and len(words) is 1):
+    curr = {}
+    dicts.append(curr)
+  elif (words[0] == cmds[5] and len(words) is 1):
+    if curr is base:
+      print "INVALID ROLLBACK"
+    else:
+      #del curr
+      dicts.pop() #remove curr
+      curr = dicts[len(dicts)-1] #rebind to last
+  elif (words[0] == cmds[6] and len(words) is 1):
+    flatten()
   else:
     # should not be able to get here
-    print "I should not be in here (not a known command)"
+    print "Malformed Input, Try Again"
     return
 
 
 if __name__ == "__main__":
   line = ""
   while(1):
-    line = raw_input("$")
+    line = raw_input("")
     words = line.split()
+    if (len(words) < 1): continue
     words[0] = words[0].lower()
     if (words[0] not in cmds):
-      print "bad input, crashing hard"
-      exit()
+      print "Unknown Command, Try Again"
     elif (words[0] == "end"):
       exit()
     process(words)
-
-
-
-
-  print "derp"
