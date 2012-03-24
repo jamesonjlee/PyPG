@@ -1,0 +1,35 @@
+README
+
+Doing the Thumbtack Challenges:
+http://www.thumbtack.com/challenges
+Jameson Lee
+
+2.py
+
+A simple database supporting a few commands
+SET [name] [val]  - [name] has value [val]
+GET [name]        - print value of [name]
+UNSET [name]      - unsets (makes null) [name]
+END               - quits
+
+BEGIN             - starts a transaction block (scope)
+ROLLBACK          - rollback all changes in this transaction block
+COMMIT            - commits all open transaction blocks into db (global)
+
+
+
+3.py
+
+Request Matching, match request to services on specific days
+maximize the number of requests that can be fulfilled
+
+There can be up to 30 services, 40 categories, 20 days, and 150 requests.
+
+input(s):
+service [name] [service1] [service2] ...
+request [name] [service] [day or day-range]
+
+output:
+number of request fulfilled in each problem.
+
+**One blank line between problems aka, multiple problems in a single file/run

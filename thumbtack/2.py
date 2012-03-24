@@ -2,6 +2,7 @@
 #
 # Thumbtack Challenge #2
 # Simple DB
+# Jameson Lee
 #
 # Implement DB with
 # GET, SET, UNSET
