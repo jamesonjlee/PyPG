@@ -8,10 +8,14 @@
 #  by Jameson Lee
 #  March-19 2012
 #
-#  python 2.6.6
+#  Dependency:
+#  python (2.6.6), >2.6, <3.0
+#  python-pip
+#  munkres - (pip install munkres)
 ##########################################
 
 import sys
+from munkres import Munkres
 
 #
 # Find the Tutor-Player pair's base FLF
@@ -20,7 +24,7 @@ def getBaseFLF(tutor, player):
   vowels = "aeiou"
   flf = 0
   for v in vowels:
-    flf += player.count(v)
+    flf += player.lower().count(v)
   if (len(tutor) % 2):
     return flf*1.5
   else:
@@ -30,27 +34,56 @@ def getBaseFLF(tutor, player):
 # Find the modifier for a tutor-player pair
 #  - since minimum match is 2 chars, do sliding window matching
 #  - non-alphabets count as valid matches
+#  - ignore case
 #
 def getModFLF(tutor, player):
   pos = 2
-  while(len(tutor) < pos):
-    if (tutor[pos-2:pos] in player):
+  while(len(tutor) >= pos):
+    if (tutor[pos-2:pos].lower() in player.lower()):
       return 1.5
     else:
       pos+=1
   return 1.0
 
 
-### main body ###
+### Hungarian Style  body ###
+#
+# uses Hungarian (Kuhn) Algorithm to find best-pairing
+# max-flow is found by doing max-local as weight
+# the total FLF is found by doing max*len - total
+#
+# this version is actually really inefficient, both memeory and runtime
+#
 def main(tutors, players):
   scores = []
   #create cross-scores
   for tutor in tutors:
     # create the score array for each tutor to every player
     scores.append([ getModFLF(tutor, player)*getBaseFLF(tutor,player) for player in players ])
+  # print the matrix
+  #pretty_print(scores)
 
-  print scores
+  # find max
+  maxscore = max(max(row) for row in scores)
+  # turn the matrix into a min-problem
+  for row in scores:
+    for idx,col in enumerate(row):
+      row[idx] = maxscore-col
+  # using munkres (copy of tutorial)
+  m = Munkres()
+  indexes = m.compute(scores)
 
+#  pretty_print(scores)
+  total = 0
+  print "[[Tutor ::: Player]]"
+  for row, col in indexes:
+    total += scores[row][col]
+    print '{0} ::: {1}'.format(tutors[row],players[col])
+  print 'total FLF: {0}'.format(maxscore*len(tutors)-total)
+
+def pretty_print(matrix):
+  for r in matrix:
+    print r
 
 ### input handling ###
 

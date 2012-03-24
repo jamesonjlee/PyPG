@@ -1,0 +1,33 @@
+This is the README, you should README
+jump down to REQUIREMENTS
+
+REQUIREMENTS:
+  python >= 2.6 < 3.0 (tested on 2.6.6)
+  python-pip (for installing)
+  munkres (install via pip)
+
+RUNNING
+  python mindsnack.py 
+OR fast-run
+  python mindsnack.py [tutors] [players]
+
+SAMPLES:
+  3x3 in simple[player/tutor]
+  10x10 in players/tutors
+
+Total time: 6hrs
+  3hr initial coding/planning
+  .01 sec accidently nuking repo
+  1.5hr coding
+  1.5hr looking up docs and such
+
+HOW DOES IT WORK:
+  Takes the name fiels and creates a Matrix where ROWS and COLUMNS are TUTORS
+  and PLAYERS.  Each entry is the FLF score of the matching.  The optimal match
+  is calculated using the Hungarian (Kuhn-Munkres) Algorithm via munkres.  The
+  matrix is flipped before it actually is used (so min-flow => max-flow).
+
+REF:
+  http://en.wikipedia.org/wiki/Hungarian_algorithm
+  http://software.clapper.org/munkres/
+  http://en.wikipedia.org/wiki/Matching_(graph_theory)#Maximum_matchings_in_bipartite_graphs
