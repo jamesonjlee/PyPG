@@ -27,7 +27,7 @@ def _reset():
 
 def _match():
   global servicers, requests
-  servicers.sort(key = len)
+  servicers.sort(key = len, reverse = True)
   #servicers.sort(lambda a,b: cmp(len(a), len(b)))
   print servicers
   print requests
