@@ -13,6 +13,9 @@
 # - use list to queue current dicts
 # - COMMIT merges into base dict
 
+import sys
+import readline
+
 cmds = ["end", "get", "set", "unset", "begin", "rollback", "commit"]
 base = {}
 curr = base
@@ -72,8 +75,14 @@ def process(words):
 
 if __name__ == "__main__":
   line = ""
+  # allow fast run
+  if len(sys.argv) > 1:
+    lines = open(sys.argv[1])
+  else:
+    lines = False
+
   while(1):
-    line = raw_input("")
+    line = raw_input("") if not lines else lines.readline()
     words = line.split()
     if (len(words) < 1): continue
     words[0] = words[0].lower() # for all versions of command
