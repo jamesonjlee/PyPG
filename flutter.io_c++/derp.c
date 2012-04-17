@@ -61,22 +61,19 @@ int main(int argc, char ** argv){
 
   //make the random matrix
   for(i=w;i<wh+w;i++) M[i] = rand() >> 24;
-  prettyPrintc(M,w,h+2);
   // expand the matrix, to loop-linearly
   for(i=0;i<w;i++) {
     M[i] = M[wh+i];
     M[wh+w+i] = M[i+w];
   }
-  prettyPrintc(M,w,h+2);
   prettyPrintc(M+w,w,h);
 
   //dx
   _start = clock();
-  for(i=w;i<wh+w;i++) {
-    _t = -M[i-1]+M[i+1];
+  for(i=0;i<wh;i++) {
+    _t = -M[i-1+w]+M[i+1+w];
     //maxdx = _t ? maxdx < _t : maxdx;
     //mindx = _t ? mindx > _t : mindx;
-    printf("%d, %d, %d\n", -M[i-1],M[i+1],_t);
     Mdx[i] = (int) _t;
   }
   printf("Compute dx: %f\n", (double) (clock()-_start)/CLOCKS_PER_SEC);
@@ -87,7 +84,6 @@ int main(int argc, char ** argv){
     maxdx = max(maxdx, Mdx[i]);
   }
   printf("Compute max(dx): %f\n", (double) (clock()-_start)/CLOCKS_PER_SEC);
-  //printf("Compute max(dx): %f\n", (double) (clock()-_start)/CLOCKS_PER_SEC);
 
   // min dx
   _start = clock();
@@ -129,6 +125,11 @@ int main(int argc, char ** argv){
  
   return 0;
 }
+
+
+/****************
+ * for debuggin'
+ ****************/
 
 void prettyPrint(int * matrix, int w, int h){
   int i,j;

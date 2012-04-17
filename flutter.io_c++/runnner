@@ -1,4 +1,0 @@
-#
-#
-#
-gcc -std=c99 -O3 -o derp ./derp.c && ./derp 5 5
